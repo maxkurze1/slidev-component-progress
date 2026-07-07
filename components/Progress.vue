@@ -238,7 +238,6 @@ const cssVars = computed(() =>
     "--stroke-color": props.strokeColor,
     "--thickness": thickness.value,
     "--transition-duration": props.transitionDuration,
-    display: disabled.value ? "none" : undefined,
   }).filter(([, value]) => value))
 );
 
@@ -314,6 +313,16 @@ const gradientWidth = computed(() =>
 
   &:hover {
     background-color: inherit;
+    opacity: 1;
+  }
+}
+
+/* Disabled layouts fade the bar out instead of removing it, so it can still be
+ * revealed on hover. */
+.progress--disabled {
+  opacity: 0;
+
+  &:hover {
     opacity: 1;
   }
 }
@@ -495,7 +504,10 @@ const gradientWidth = computed(() =>
 <template>
   <div
     class="progress"
-    :class="{ 'progress--bottom': position === 'bottom' }"
+    :class="{
+      'progress--bottom': position === 'bottom',
+      'progress--disabled': disabled,
+    }"
     :style="cssVars"
   >
     <div class="progress__container">
